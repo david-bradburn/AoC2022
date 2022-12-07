@@ -2,7 +2,9 @@
 ###### https://adventofcode.com/2022/day/7 ######################
 #################################################################
 
-file = "test.txt"
+from anytree import NodeMixin, RenderTree, search, PreOrderIter
+
+file = "input.txt"
 
 DAY_NO = "7"
 PART = "1"
@@ -28,6 +30,8 @@ class Folder():
 		self.filesList = fileList
 		self.folderList = folderList
 		self.parentDirectory = parentDirectory
+
+		self.directorySize = 0
 	
 	def addFolder(self, folder):
 		self.folderList.append(folder)
@@ -35,22 +39,81 @@ class Folder():
 	def addFile(self, file):
 		self.filesList.append(file)
 
+
+class TheDiagram(NodeMixin):  # Add Node feature
+	def __init__(self, name:str, itemType='', absolutePath = '', size=0, parent=None, children=None):
+		super(TheDiagram, self).__init__()
+		self.name = name
+		self.size = size
+		self.itemType = itemType
+		self.absolutePath = absolutePath
+
+		self.parent = parent
+		if children:  # set children only if given
+			self.children = children
+    
+	def addChild(self, child: object):
+		self.children = [*self.children, child]
+    
+    
+
+
 class Tree():
 
 	def __init__(self, input) -> None:
-		self.tree = input
-		self.allFolders = []
+		self.input = input
+		# self.allFolders = []
 
 		self.currentDirectory = ''
-		self.directoryHistory = []
+		self.directoryHistory = ['/']
 		self.treeNetworkDict = {}
+		self.MAXNODESIZE = 100000
+		self.total = 0
+		self.root = TheDiagram('/', itemType='dir', absolutePath='/')
+		self.displayTree()
 		self.main()
+		# self.main()
 	
 	def main(self):
-		pass
+		for instr in self.input:
+			self.createFileTree(instr)
+		self.displayTree()
+		self.findDirectorySize(self.root)
+		self.displayTree()
+		self.totalUpDirectories()
+		print(self.total)
+
+	def returnFullParentPath(self):
+		temp = ''
+		for dir in self.directoryHistory:
+			temp += dir + '_' 
+		
+		temp += self.currentDirectory
+		return temp
+	
+	def returnFullPath(self, newDir):
+		temp = ''
+		for dir in self.directoryHistory:
+			temp += dir + '_' 
+		
+		temp += self.currentDirectory + '_'
+		temp += newDir
+		return temp
+	
+	def displayTree(self):
+		for pre, fill, node in RenderTree(self.root):
+			treestr = u"%s%s" % (pre, node.name)
+			print(treestr.ljust(20), node.itemType, node.size)
+	
+	def findFolder(self, path):
+		temp = search.find(self.root, filter_ =lambda node: node.absolutePath == path)
+		# print(temp)
+		return temp
+
 
 	
 	def createFileTree(self, terminalLine):
+		# print(terminalLine)
 		splitTerminalLine = terminalLine.split(' ')
 		match splitTerminalLine[0]:
 
@@ -62,21 +125,58 @@ class Tree():
 							case '..': ##move up tree
 								self.currentDirectory = self.directoryHistory[-1]
 								self.directoryHistory = self.directoryHistory[:-1]
-								
+
+							case '/': #'# move to root
+								self.currentDirectory = '/'
+								self.directoryHistory = []
+
 							case _:
-								self.currentDirectory = splitTerminalLine[2]
 								self.directoryHistory.append(self.currentDirectory)
+								self.currentDirectory = splitTerminalLine[2]
+								# print(self.directoryHistory)
 
 					case 'ls':
 						pass #we can just skip this
 			
 			case 'dir':
-				if splitTerminalLine[1] not in self.allFolders:
-					self.allFolders.append(splitTerminalLine[1])
+				parentPath = self.returnFullParentPath()
+				parentNode = self.findFolder(parentPath)
+				childPath = self.returnFullPath(splitTerminalLine[1])
+				parentNode.addChild(TheDiagram(splitTerminalLine[1], itemType='dir', absolutePath=childPath))
+				pass
+
 				
-				tempDir = Folder(splitTerminalLine[1], [], [], self.currentDirectory)
-				if self.currentDirectory not in self.treeNetworkDict:
-					self.treeNetworkDict[self.currentDirectory] = [tempDir]
+			case _:
+				parentPath = self.returnFullParentPath()
+				parentNode = self.findFolder(parentPath)
+				childPath = self.returnFullPath(splitTerminalLine[1])
+				parentNode.addChild(TheDiagram(splitTerminalLine[1], itemType='file', absolutePath=childPath, size=int(splitTerminalLine[0])))
+
+				# print('File')
+	
+	def findDirectorySize(self, folder):
+		tempSize = 0
+		for child in folder.children:
+			# print(child.name)
+			match child.itemType:
+				case 'dir':
+					tempSize += self.findDirectorySize(child)
 				
+				case 'file':
+					# print("file {}, size {}".format(ch))
+					tempSize += child.size
+
+				case _:
+					raise Exception
+
+			# print(child.name)
+		folder.size = tempSize
+		return tempSize
+	
+	def totalUpDirectories(self):
+		for node in PreOrderIter(self.root):
+			if node.itemType == 'dir' and (node.size <= self.MAXNODESIZE):
+				self.total += node.size
 
 
+p1 = Tree(cleanerInput)
