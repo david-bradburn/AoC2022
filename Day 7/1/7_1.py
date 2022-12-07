@@ -4,7 +4,7 @@
 
 from anytree import NodeMixin, RenderTree, search, PreOrderIter
 
-file = "input.txt"
+file = "test.txt"
 
 DAY_NO = "7"
 PART = "1"
@@ -41,8 +41,8 @@ class Folder():
 
 
 class TheDiagram(NodeMixin):  # Add Node feature
-	def __init__(self, name:str, itemType='', absolutePath = '', size=0, parent=None, children=None):
-		super(TheDiagram, self).__init__()
+	def __init__(self, name:str, itemType:str, absolutePath = '', size=0, parent=None, children=None):
+		# super(TheDiagram, self).__init__()
 		self.name = name
 		self.size = size
 		self.itemType = itemType
