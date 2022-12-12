@@ -2,7 +2,9 @@
 ###### https://adventofcode.com/2022/day/10 #####################
 #################################################################
 
-file = "input.txt"
+import numpy as np
+
+file = "test.txt"
 
 DAY_NO = "10"
 PART = "2"
@@ -25,7 +27,10 @@ class ComSystem():
 
 		self.addxTime = 2
 
-		# self.cyclesToPrint = [19,59,99,139,179,219]
+		
+
+		self.cyclesToPrint = [19,59,99,139,179,219]
+		self.display = []
 
 		self.main()
 	
@@ -39,24 +44,40 @@ class ComSystem():
 		self.output.append([self.clockCycleCounter, self.regValue])
 	
 
-	def printOutput(self):
-		temp = 0
-		for line in self.output:
+	# def printOutput(self):
+	# 	temp = 0
+	# 	for line in self.output:
 			
-			if line[0] in self.cyclesToPrint:
-				temp += (line[0]+ 1) * line[1]
-				print(line)
-		print(temp)
+	# 		if line[0] in self.cyclesToPrint:
+	# 			temp += (line[0]+ 1) * line[1]
+	# 			print(line)
+	# 	print(temp)
 
 	def updateDisplay(self):
-		...
+		pongPosition = [self.regValue - 1, self.regValue, self.regValue + 1]
+		
+		if self.clockCycleCounter in pongPosition:
+			self.display.append('#')
+		else:
+			self.display.append('.')
+	
+	def displayScreen(self):
+		output = np.reshape(self.display, (40, 6)).T
+		# lengthDisplay = len(self.display)
+		for row in output:
+			temp = ''
+			for value in row:
+				temp += value
+			print(temp)
+		
 	
 
 	def main(self):
 		for instruction in self.input:
 			self.processInstruction(instruction)
-			
-		self.printOutput()
+		
+		self.displayScreen()
+		# self.printOutput()
 		
 
 	def processInstruction(self, instruction):
@@ -69,6 +90,7 @@ class ComSystem():
 			case 'noop':
 				##
 				#here is during the cycle
+				self.updateDisplay()
 				##
 				self.incrementClockCount()
 				self.addToOutput()
@@ -77,6 +99,7 @@ class ComSystem():
 				for instructionCycle in range(self.addxTime):
 					##
 					#here is during the cycle
+					self.updateDisplay()
 					##
 					self.incrementClockCount()
 					if instructionCycle == 1:
