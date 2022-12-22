@@ -1,0 +1,104 @@
+==========================
+Round 0
+==========================
+--------Monkey 0--------
+Inspecting item 79
+New item value 6
+Next Monkey 3
+Inspecting item 98
+New item value 22
+Next Monkey 3
+--------Monkey 1--------
+Inspecting item 54
+New item value 3
+Next Monkey 0
+Inspecting item 65
+New item value 14
+Next Monkey 0
+Inspecting item 75
+New item value 5
+Next Monkey 0
+Inspecting item 74
+New item value 4
+Next Monkey 0
+--------Monkey 2--------
+Inspecting item 79
+New item value 1
+Next Monkey 3
+Inspecting item 60
+New item value 12
+Next Monkey 3
+Inspecting item 97
+New item value 10
+Next Monkey 3
+--------Monkey 3--------
+Inspecting item 74
+New item value 9
+Next Monkey 1
+Inspecting item 6
+New item value 9
+Next Monkey 1
+Inspecting item 22
+New item value 8
+Next Monkey 1
+Inspecting item 1
+New item value 4
+Next Monkey 1
+Inspecting item 12
+New item value 15
+Next Monkey 1
+Inspecting item 10
+New item value 13
+Next Monkey 1
+==========================
+Round 1
+==========================
+--------Monkey 0--------
+Inspecting item 3
+New item value 11
+Next Monkey 3
+Inspecting item 14
+New item value 13
+Next Monkey 3
+Inspecting item 5
+New item value 3
+Next Monkey 3
+Inspecting item 4
+New item value 7
+Next Monkey 3
+--------Monkey 1--------
+Inspecting item 9
+New item value 15
+Next Monkey 0
+Inspecting item 9
+New item value 15
+Next Monkey 0
+Inspecting item 8
+New item value 14
+Next Monkey 0
+Inspecting item 4
+New item value 10
+Next Monkey 0
+Inspecting item 15
+New item value 2
+Next Monkey 0
+Inspecting item 13
+New item value 0
+Next Monkey 2
+--------Monkey 2--------
+Inspecting item 0
+New item value 0
+Next Monkey 1
+--------Monkey 3--------
+Inspecting item 11
+New item value 14
+Next Monkey 1
+Inspecting item 13
+New item value 16
+Next Monkey 1
+Inspecting item 3
+New item value 6
+Next Monkey 1
+Inspecting item 7
+New item value 10
+Next Monkey 1
