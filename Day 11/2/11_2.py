@@ -5,7 +5,7 @@
 import math
 
 
-file = "input.txt"
+file = "test.txt"
 
 DAY_NO = "11"
 PART = "2"
