@@ -32,7 +32,7 @@ class Map():
 		self.distanceMap = np.ones_like(self.map, dtype=int)
 		self.distanceMap *= BIGNUMBER
 		self.distanceMap[self.startPosition[1]][self.startPosition[0]] = 0
-		print(self.distanceMap)
+		# print(self.distanceMap)
 		# self.display()
 
 		self.findSmallestdistance()
@@ -59,13 +59,9 @@ class Map():
 				else:
 					self.map[rowIndex][coloumnIndex] = ord(value) - 96
 
-		print(self.map)
+		# print(self.map)
 		# print(tempInput)
 	
-	
-
-	def findManhattanDistance(xstart, ystart, xcurent, ycurrent):
-		return abs(xstart - xcurent) + abs(ystart - ycurrent)
 
 	def returnCoordsRoundCurrentLocation(self, x, y):
 		tempCoordArray = []
@@ -97,14 +93,14 @@ class Map():
 
 	def findSmallestdistance(self):
 		while len(self.coordQueue) > 0:
-			print("------------------------------------")
+			# print("------------------------------------")
 			currentCoord = self.coordQueue.pop(0)
 
 			currentdistance = self.distanceMap[currentCoord[1]][currentCoord[0]]
 
-			print(f"Current coord {currentCoord}")
+			# print(f"Current coord {currentCoord}")
 			newCoords = self.returnCoordsRoundCurrentLocation(currentCoord[0], currentCoord[1])
-			print(f"Potential coords {newCoords}")
+			# print(f"Potential coords {newCoords}")
 			legalCoords = self.checkWeCanWalkThere(currentCoord, newCoords)
 
 			for coord in legalCoords:
@@ -115,7 +111,7 @@ class Map():
 					self.distanceMap[coord[1]][coord[0]] = newValue
 					self.coordQueue.append(coord)
 			
-			print(f"Legal coords {legalCoords}")
+			# print(f"Legal coords {legalCoords}")
 			# print(self.distanceMap)
 
 			# for coord in newCoords:
