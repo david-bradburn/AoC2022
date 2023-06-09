@@ -49,40 +49,59 @@ class distress_packets():
 	
 	# def pair_iter(self, left):
 	# 	for left_item in left:
+
+	def compare_pair(self, left_val, right_val):
+		match (left_val, right_val):
+					
+			case (int(), int()): 
+				print("both int")
+				if left_val <= right_val:
+					print("In right order")
+					# in right order
+				else:
+					#in wrong order
+					print("In wrong order")
+			
+			case (None, _) | (_, None):
+				if left_val == None:
+					## in right order
+					...
+				elif left_val != None and right_val == None:
+					# in wrong order
+					...
+				print("one is empty")
+
+			case (list, int()) | (int(), list):
+				print("list and int")
+
+			case (list, _) | (_, list):
+				print("both list")
+
+			case (_, _):
+				raise Exception
+				print("default")
+		
 	
 	def main(self):
 		for pair in self.paired_data:
 			print("------------------------------")
 			left, right = pair
 
+			print(left, right)
 			left_iter = iter(left)
 			right_iter = iter(right)
 
 			
 			# print(left)
+			for i in left:
+				left_val = self.iterate_iter(left_iter)
+				right_val = self.iterate_iter(right_iter)
 
-			left_val = self.iterate_iter(left_iter)
-			right_val = self.iterate_iter(right_iter)
-			print(left_val, right_val)
-			# print(left_iter_type, right_iter_type)
+				print(left_val, right_val)
+				# print(left_iter_type, right_iter_type)
+				self.compare_pair(left_val, right_val)
 
-			match (left_val, right_val):
 				
-				case (int(), int()): 
-					print("both int")
-				
-				case (None, _) | (_, None):
-					print("one is empty")
-
-				case (list, int()) | (int(), list):
-					print("list and int")
-
-				case (list, _) | (_, list):
-					print("both list")
-
-				case (_, _):
-					raise Exception
-					print("default")
 
 
 			
