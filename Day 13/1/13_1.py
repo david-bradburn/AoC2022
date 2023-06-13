@@ -4,7 +4,7 @@
 
 import ast
 
-file = "input.txt"
+file = "test.txt"
 
 DAY_NO = "13"
 PART = "1"
@@ -67,124 +67,110 @@ class distress_packets():
 	def compare_pair(self, left_val, right_val):
 		print("-----")
 		print(f"left_val: {left_val} \nright_val:{right_val}")
-		match (left_val, right_val):
+
+
+		left_val_is_list = isinstance(left_val, list)
+		left_val_is_int = isinstance(left_val,  int)
+
+		right_val_is_list = isinstance(right_val, list)
+		right_val_is_int  = isinstance(right_val, int)
+
+		left_is_none = (left_val == None)
+		right_is_none = (right_val == None)
+
+		if (left_val_is_int and right_val_is_int): ## both int
+			print("both int")
+			if left_val < right_val:
+				print("left is lower than right, pair in right order")
+				return 1
+			elif left_val == right_val:
+				print("left_val is equal to right_val, continue")
+				return 0
+			else:
+				print("left val is greater than right val, pair in wrong order")
+				return 2
+					
 			
-					
-			case (int(), int()): 
-				print("both int")
-				if left_val < right_val:
-					print("left is lower than right, pair in right order")
-					# self.inOrderCount += 1
-					return 1
-					# print("In right order")
-					# in right order
-				elif left_val == right_val:
-					print("left_val is equal to right_val, continue")
-					return 0
-					#in wrong order
-				else:
-					print("left val is greater than right val, pair in wrong order")
-					return 2
-					
-			
-			case (None, _) | (_, None):
-				print(f"left is {left_val} and right is {right_val}")
-
-				if(left_val == None) and (right_val == None):
-					print(f"left and right val are None, continue")
-					# print(f"left is {left_val} and right is {right_val}")
-					## continue
-					return 0
-
-				elif left_val == None:
-					print("left is None and right has not finished, pair in right order ")
-					# print(f"left is {left_val} and right is {right_val}")
-					## in right order
-					# self.inOrderCount += 1
-					return 1
-					...
-				elif (left_val != None) and (right_val == None):
-					print("left has not finsihed and right has finished, pair in wrong order ")
-
-					return 2
-					# print("one is empty")
-
-				else:
-					raise Exception
-
-			case (_, int()) | (int(),_):
-
-				# print(f"{left_val} {right_val}")
-				if type(right_val) == int:
-					print("list and int")
-
-					#right_val is an int and left is  list (i hope)
-					right_list = [right_val]
-					left_val_iter = iter(left_val)
-					right_val_iter = iter(right_list)
-					if len(left_val) == 0:
-						# self.inOrderCount += 1
-						return 1
-					for n in left_val:
-						orderVal = self.compare_pair(self.iterate_iter(left_val_iter), self.iterate_iter(right_val_iter))
-					
-						if(orderVal == 0):
-							pass
-						elif (orderVal == 2) or (orderVal == 1):
-							return orderVal
-						else:
-							raise Exception("Inncorrect return value")
+		elif (left_val_is_list and right_val_is_list): ## both list
+			print("both list")
+			# right_list = list[right_val]
+			left_val_iter = iter(left_val)
+			right_val_iter = iter(right_val)
+			if len(left_val) == 0 and len(right_val) != 0:
 				
-				elif type(left_val) == int:
-					print("int and list")
-					#left_val is an int
-					left_list = [left_val]
-					left_val_iter = iter(left_list)
-					right_val_iter = iter(right_val)
-					if len(left_list) == 0:
-						# self.inOrderCount += 1
-						return 1
-					for n in left_list:
-						orderVal = self.compare_pair(self.iterate_iter(left_val_iter), self.iterate_iter(right_val_iter))
+				return 1
+			elif len(left_val) == 0 and len(right_val) == 0:
+				return 0
 
-						# print(orderVal)
-						if(orderVal == 0):
-							pass
-						elif (orderVal == 2) or (orderVal == 1):
-							return orderVal
-						else:
-							raise Exception("Inncorrect return value")
+			for n in left_val:
+				orderVal = self.compare_pair(self.iterate_iter(left_val_iter), self.iterate_iter(right_val_iter))
 
+				# print(orderVal)
+				if(orderVal == 0):
+					pass
+				elif (orderVal == 2) or (orderVal == 1):
+					return orderVal
 				else:
-					print()
-					raise Exception
-				# print("list and int")
+					raise Exception("Inncorrect return value")
+		
+		elif (left_val_is_int and right_val_is_list): ## left int right list
+			print("int and list")
+			#left_val is an int
+			left_list = [left_val]
+			left_val_iter = iter(left_list)
+			right_val_iter = iter(right_val)
+			if len(left_list) == 0:
+				# self.inOrderCount += 1
+				raise Exception("Int into list should not have length zero")
+			for n in left_list:
+				orderVal = self.compare_pair(self.iterate_iter(left_val_iter), self.iterate_iter(right_val_iter))
 
-			case (_, _):
-				# print(f"{left_val} {right_val}")
-				# print()
-				print("both list")
-				# right_list = list[right_val]
-				left_val_iter = iter(left_val)
-				right_val_iter = iter(right_val)
-				if len(left_val) == 0 and len(right_val) != 0:
-					# self.inOrderCount += 1
-					return 1
-				elif len(left_val) == 0 and len(right_val) == 0:
-					return 0
+				# print(orderVal)
+				if(orderVal == 0):
+					pass
+				elif (orderVal == 2) or (orderVal == 1):
+					return orderVal
+				else:
+					raise Exception("Inncorrect return value")
+				
+		elif (left_val_is_list and right_val_is_int):
+			print("list and int")
 
-				for n in left_val:
-					orderVal = self.compare_pair(self.iterate_iter(left_val_iter), self.iterate_iter(right_val_iter))
+			#right_val is an int and left is  list (i hope)
+			right_list = [right_val]
+			left_val_iter = iter(left_val)
+			right_val_iter = iter(right_list)
+			if len(left_val) == 0:
+				print(f"left val {left_val} is empty in right order")
+				return 1
+			for n in left_val:
+				orderVal = self.compare_pair(self.iterate_iter(left_val_iter), self.iterate_iter(right_val_iter))
+			
+				if(orderVal == 0):
+					pass
+				elif (orderVal == 2) or (orderVal == 1):
+					return orderVal
+				else:
+					raise Exception("Inncorrect return value")
+		
+		elif(left_is_none and right_is_none): ## left is empty but right is not
+			print("left and right are None")
+			return 0
+		
+		elif (left_is_none and not right_is_none):
+			return 1
+		
+		elif (not left_is_none and right_is_none):
+			return 2
+		
+		else:
+			raise Exception("egg")	
+		
 
-					# print(orderVal)
-					if(orderVal == 0):
-						pass
-					elif (orderVal == 2) or (orderVal == 1):
-						return orderVal
-					else:
-						raise Exception("Inncorrect return value")
+#
+
 					
-		return 0
+		# return 0
 
 	
 	def main(self):
