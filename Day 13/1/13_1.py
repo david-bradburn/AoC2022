@@ -4,7 +4,7 @@
 
 import ast
 
-file = "test.txt"
+file = "input.txt"
 
 DAY_NO = "13"
 PART = "1"
@@ -29,8 +29,6 @@ class distress_packets():
 
 		self.pair_data()
 
-		# self.inOrderTemp = 0
-
 		self.main()
 
 		print(self.inOrderCount)
@@ -53,6 +51,7 @@ class distress_packets():
 			print("Empty list")
 			return None
 		
+
 	def eval_valOrder(self, valOrder):
 		if(valOrder == 0):
 			pass
@@ -61,16 +60,16 @@ class distress_packets():
 		else:
 			raise Exception("Inncorrect return value")
 	
-	# def pair_iter(self, left):
-	# 	for left_item in left:
 
 	def compare_pair(self, left_val, right_val):
+
+
+
 		print("-----")
 		print(f"left_val: {left_val} \nright_val:{right_val}")
 
-
-		left_val_is_list = isinstance(left_val, list)
-		left_val_is_int = isinstance(left_val,  int)
+		left_val_is_list  = isinstance(left_val, list)
+		left_val_is_int   = isinstance(left_val,  int)
 
 		right_val_is_list = isinstance(right_val, list)
 		right_val_is_int  = isinstance(right_val, int)
@@ -100,7 +99,7 @@ class distress_packets():
 				
 				return 1
 			elif len(left_val) == 0 and len(right_val) == 0:
-				return 0
+				return 1
 
 			for n in left_val:
 				orderVal = self.compare_pair(self.iterate_iter(left_val_iter), self.iterate_iter(right_val_iter))
@@ -112,6 +111,9 @@ class distress_packets():
 					return orderVal
 				else:
 					raise Exception("Inncorrect return value")
+			
+			if(orderVal == 0) and (len(left_val) < len(right_val)): ##
+				return 1
 		
 		elif (left_val_is_int and right_val_is_list): ## left int right list
 			print("int and list")
@@ -132,6 +134,10 @@ class distress_packets():
 					return orderVal
 				else:
 					raise Exception("Inncorrect return value")
+				
+			if(orderVal == 0) and (len(left_list) < len(right_val)): ##
+				print("left list is out of elements while right is not")
+				return 1
 				
 		elif (left_val_is_list and right_val_is_int):
 			print("list and int")
@@ -154,23 +160,21 @@ class distress_packets():
 					raise Exception("Inncorrect return value")
 		
 		elif(left_is_none and right_is_none): ## left is empty but right is not
-			print("left and right are None")
-			return 0
+			print("left and right are None, try in riht order?")
+			return 1
 		
 		elif (left_is_none and not right_is_none):
+			print("left is empty and right is not, in right order")
 			return 1
 		
 		elif (not left_is_none and right_is_none):
+			print("left is not empty and right is empty, in wrong order")
 			return 2
 		
 		else:
 			raise Exception("egg")	
-		
-
-#
-
 					
-		# return 0
+		return orderVal
 
 	
 	def main(self):
@@ -188,14 +192,11 @@ class distress_packets():
 			right_iter = iter(right)
 			orderVal = 0
 
-			
-			# print(left)
+
 			for i in left:
 				left_val = self.iterate_iter(left_iter)
 				right_val = self.iterate_iter(right_iter)
 
-				# print(left_val, right_val)
-				# print(left_iter_type, right_iter_type)
 				orderVal = self.compare_pair(left_val, right_val)
 				# print("egg", orderVal)
 				if(orderVal == 0):
@@ -203,7 +204,7 @@ class distress_packets():
 				elif (orderVal == 1):
 					# self.
 					self.inOrderCount += 1
-
+					print(f"Value added {pair_index + 1}")
 					self.totalCount += (pair_index + 1)
 					break
 				elif (orderVal == 2):
@@ -215,11 +216,15 @@ class distress_packets():
 			print(f"orderVal {orderVal}")
 			
 			if (orderVal == 0):
-				# orderVal = 1
+				print(f"pairs exactly match")
+				
 				self.inOrderCount +=1 
+				print(f"Value added {pair_index + 1}")
+
 				self.totalCount += (pair_index + 1)
+				# raise Exception
 			
-			# assert(self.totalWrong + self.inOrderCount) == (pair_index + 1)
+			assert(self.totalWrong + self.inOrderCount) == (pair_index + 1)
 		
 		print(self.inOrderCount, self.totalWrong)
 		assert (self.inOrderCount + self.totalWrong) == 150
@@ -228,3 +233,6 @@ class distress_packets():
 p1 = distress_packets(convertedInput)
 
 # test = iter(list[1])
+#wrong answers
+#4694
+
