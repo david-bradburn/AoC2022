@@ -1,6 +1,8 @@
 #################################################################
-###### https://adventofcode.com/2022/day/14 #######################
+###### https://adventofcode.com/2022/day/14 #####################
 #################################################################
+
+import numpy as np
 
 file = "test.txt"
 
@@ -14,30 +16,82 @@ with open(file_path_base + file, "r") as fd:
 
 cleanedInput = [i.strip("\n").split(" -> ") for i in rawInput]
 
-print(cleanedInput)
+# print(cleanedInput)
 
 class Cave():
+	
 	def __init__(self, wallCoords) -> None:
 		self.rawWallCoords = wallCoords
 		self.minX = 1000
 		self.minY = 1000
+
+		self.maxX = 0
+		self.maxY = 0
 		self.createWalls()
+		self.sandFinalLoc = []
+		self.displayCave()
 		pass
-	
-	# def checkMinX(self,x):
-	# 	if x < 
+
+
+	def displayCave(self):
+		for y in range(0, self.maxY + 1):
+			temp = ""
+			for x in range(self.minX, self.maxX + 1):
+				if [x, y] in self.walls:
+					temp += "#"
+				elif [x, y] in self.sandFinalLoc:
+					temp += "o"
+				else:
+					temp += "."
+			print(temp)
 
 
 	def createWalls(self):
+		lessRawWallPoints = []
 		for wall in self.rawWallCoords:
 			noWallPoints = len(wall)
+			temp = []
 			for point in wall:
 				x, y = point.split(",")
 				x, y = int(x), int(y)
 				self.minX = min(x, self.minX)
 				self.minY = min(y, self.minY)
-				print(x,y)
 
-		print(f"min x: {self.minX} \nmin y: {self.minY}")
+				self.maxX = max(x, self.maxX)
+				self.maxY = max(y, self.maxY)
+				# print(x,y)
+
+				temp.append((x,y))
+			lessRawWallPoints.append(temp)
+		# print(lessRawWallPoints)
+		print(f"min x {self.minX} min y {self.minY}")
+		print(f"max x {self.maxX} max y {self.maxY}")
+
+
+		self.walls = []
+		for wall in lessRawWallPoints:
+			print("------------------------")
+			for point_index in range(len(wall) - 1):
+				x0 = wall[point_index][0]
+				x1 = wall[point_index+ 1][0]
+
+				y0 = wall[point_index][1]
+				y1 = wall[point_index + 1][1]
+
+				# print(x0, y0)
+				# print(x1, y1)
+
+				
+				step = max(abs(x0 - x1), abs(y0 - y1))
+				# print(step)
+				assert(step > 0)
+				temp = np.linspace(wall[point_index], wall[point_index+1], step + 1, dtype=int).tolist()
+
+				for point in temp:
+					if point not in self.walls:
+						self.walls.append(point)
+
+			print(self.walls)
+
 
 cave = Cave(cleanedInput)
