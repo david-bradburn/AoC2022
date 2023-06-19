@@ -18,8 +18,8 @@ with open(file_path_base + file, "r") as fd:
 	rawInput = fd.readlines()
 
 cleanerInput = [i.strip("\n") for i in rawInput]
-for i in cleanerInput:
-	print(i)
+# for i in cleanerInput:
+# 	print(i)
 
 
 class Scan():
@@ -27,17 +27,29 @@ class Scan():
 	def __init__(self, data) -> None:
 		self.data = data
 		self.beaconPositions = []
+		self.sensorPositions = []
 		self.processData()
 	
 
 	def processData(self):
-		print(string.ascii_letters)
 		for line in self.data:
-			partialstrip = line.replace(" ","").strip(string.ascii_letters)
-			# match line:
-			# 	case "Sensor at x={xs}, y={ys}: closest beacon is at x={xb}, y={yb}":
-			# 		print("rg")
-			# 		# print(xs, ys)
+			partialstrip = line.strip("Sensor at x=").split(",")
+			xs = int(partialstrip[0])
+			p2 = partialstrip[1].strip(" y=").split(":")
+			ys = int(p2[0])
+
+			xb = int(p2[-1].split("=")[-1])
+			yb = int(partialstrip[-1].strip(" y="))
+
+			self.sensorPositions.append((xs, ys))
+			if [xb, yb] not in self.beaconPositions:
+				self.beaconPositions.append((xb, yb))
+
+		print(self.sensorPositions)#
+		print(self.beaconPositions)
+
+	
+	# def 
 
 scan = Scan(cleanerInput)
 				
