@@ -7,7 +7,7 @@ import string
 regex = re.compile(r'')
 
 
-file = "test.txt"
+file = "input.txt"
 
 DAY_NO = "15"
 PART = "1"
@@ -31,7 +31,7 @@ class Scan():
 
 		self.sensorDict = {}
 
-
+		self.maxDistance = 0
 		self.processData()
 
 		# self.minX = 0
@@ -39,6 +39,9 @@ class Scan():
 		self.test_y = 10
 		self.p1_y = 2000000
 
+		self.count = 0
+
+		self.checkNone()
 		
 	
 
@@ -61,11 +64,14 @@ class Scan():
 			if (xb, yb) not in self.beaconPositions:
 				self.beaconPositions.append((xb, yb))
 			
-			self.sensorDict[(xs, ys)] = self.findMatDist((xs, ys), (xb, yb))
+			matDist = self.findMatDist((xs, ys), (xb, yb))
+			self.sensorDict[(xs, ys)] = matDist
+			self.maxDistance = max(self.maxDistance, matDist)
 
 		print(self.sensorPositions)
 		print(self.beaconPositions)
 		print(self.minX, self.maxX)
+		print(self.sensorDict)
 
 	def findMatDist(self, sensorCoord, point):
 		xs = sensorCoord[0]
@@ -78,8 +84,15 @@ class Scan():
 
 	def checkNone(self):
 		self.noneCount = 0
-		for x in range(self.minX, self.maxX + 1):
-			...
+		y = self.p1_y
+		for x in range(self.minX - self.maxDistance, self.maxX + self.maxDistance + 1):
+			for sensorPosition in self.sensorPositions:
+				if self.findMatDist((x, y), sensorPosition) <= self.sensorDict[sensorPosition] and (x,y) not in self.beaconPositions:
+					self.count += 1
+					break
+		
+		print(self.count)
+
 		# ...
 
 	
